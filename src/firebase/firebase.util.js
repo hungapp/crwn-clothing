@@ -1,7 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-import { tsNumberKeyword } from '@babel/types';
 
 const config = {
   apiKey: 'AIzaSyBFERmp2CH_YM1PhpLU1_hRvuz8C-yeqf4',
@@ -47,6 +46,23 @@ export const addCollectionAndDocuments = (collectionKey, objectsToAdd) => {
     batch.set(newDocRef, obj);
   });
   batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = collections => {
+  const transformedCollection = collections.docs.map(doc => {
+    const { title, items } = doc.data();
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    };
+  });
+
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
 };
 
 export const auth = firebase.auth();
