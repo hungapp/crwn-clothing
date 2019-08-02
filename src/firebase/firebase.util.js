@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import { tsNumberKeyword } from '@babel/types';
 
 const config = {
   apiKey: 'AIzaSyBFERmp2CH_YM1PhpLU1_hRvuz8C-yeqf4',
@@ -40,7 +41,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 export const addCollectionAndDocuments = (collectionKey, objectsToAdd) => {
   const collectionRef = firestore.collection(collectionKey);
-  console.log(collectionRef);
+  const batch = firestore.batch();
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+  });
+  batch.commit();
 };
 
 export const auth = firebase.auth();
