@@ -11,10 +11,13 @@ import {
 
 const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
   <MenuItemContainer
-    className={`${size}`}
+    size={size}
     onClick={() => history.push(`${match.url}${linkUrl}`)}
   >
-    <BackgroundImageContainer style={{ backgroundImage: `url(${imageUrl})` }} />
+    <BackgroundImageContainer
+      className="background-image"
+      imageUrl={imageUrl}
+    />
     <ContentContainer>
       <TiltleContainer>{title.toUpperCase()}</TiltleContainer>
       <SubtitleContainer>SHOP NOW</SubtitleContainer>
